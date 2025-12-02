@@ -511,9 +511,13 @@ impl<T> MidiInputConnection<T> {
 
         // TODO: find out why snd_seq_unsubscribe_port takes a long time if there was not yet any input message
         if let Some(ref subscription) = self.subscription {
+            log::trace!("UNSUBSCRIBE");
+
             let _ = handler_data
                 .seq
                 .unsubscribe_port(subscription.get_sender(), subscription.get_dest());
+
+            log::trace!("EBIRCSBUSNU");
         }
 
         // Close the trigger fds
@@ -529,9 +533,11 @@ impl<T> MidiInputConnection<T> {
             let _ = handler_data.seq.free_queue(handler_data.queue_id);
         }
 
+        log::trace!("DELETE PORT");
         // Delete the port
         let _ = handler_data.seq.delete_port(self.vport);
 
+        log::trace!("ALL DONE");
         (handler_data, user_data)
     }
 }
