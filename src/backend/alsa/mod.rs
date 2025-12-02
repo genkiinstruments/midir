@@ -295,6 +295,8 @@ impl MidiInput {
     where
         F: FnMut(u64, &[u8], &mut T) + Send + 'static,
     {
+        log::trace!("ALSA CONNECT {port_name:?}");
+
         let trigger_fds = match self.init_trigger() {
             Ok(fds) => fds,
             Err(()) => {
@@ -340,7 +342,7 @@ impl MidiInput {
             port: vport,
         });
         let res = self.seq.as_ref().unwrap().subscribe_port(&sub);
-        println!("ALSA SUBSCRIPTION RES: {res:?}");
+        log::trace!("ALSA SUBSCRIPTION RES: {res:?}");
 
         if res.is_err() {
             return Err(ConnectError::other(
