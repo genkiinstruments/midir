@@ -339,7 +339,10 @@ impl MidiInput {
             client: self.seq.as_ref().unwrap().client_id().unwrap(),
             port: vport,
         });
-        if self.seq.as_ref().unwrap().subscribe_port(&sub).is_err() {
+        let res = self.seq.as_ref().unwrap().subscribe_port(&sub);
+        println!("ALSA SUBSCRIPTION RES: {res:?}");
+
+        if res.is_err() {
             return Err(ConnectError::other(
                 "could not create ALSA input subscription",
                 self,
