@@ -296,6 +296,7 @@ impl MidiInput {
         F: FnMut(u64, &[u8], &mut T) + Send + 'static,
     {
         log::trace!("ALSA CONNECT {port_name:?}");
+        asdf
 
         let trigger_fds = match self.init_trigger() {
             Ok(fds) => fds,
